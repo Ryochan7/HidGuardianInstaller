@@ -1,16 +1,19 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Text;
 
 namespace HidGuardianInstaller
 {
-    class Util
+    static class Util
     {
         public static Guid sysGuid = new Guid("{4D36E97D-E325-11CE-BFC1-08002BE10318}");
         public static string exepath = Directory.GetParent(Assembly.GetExecutingAssembly().Location).FullName;
         public static string arch = Environment.Is64BitOperatingSystem ? "x64" : "x86";
         internal const string hidGuardDevicePath = @"Root\HidGuardian";
+        internal const string HIDGUARD_VERSION = "1.14.3.1";
 
         public static List<string> affectedDevs = new List<string>()
         {
@@ -192,6 +195,36 @@ namespace HidGuardianInstaller
             if (deviceInfoSet.ToInt64() != NativeMethods.INVALID_HANDLE_VALUE)
             {
                 NativeMethods.SetupDiDestroyDeviceInfoList(deviceInfoSet);
+            }
+
+            return result;
+        }
+
+        public static bool IsTestSigningEnabled()
+        {
+            bool result = false;
+            string foundGUID = string.Empty;
+            using (RegistryKey key = Registry.LocalMachine.
+                OpenSubKey(@"BCD00000000\Objects\{9dea862c-5cdd-4e70-acc1-f32b344d4795}\Elements\23000003"))
+            {
+                if (key != null)
+                {
+                    foundGUID = key.GetValue("Element", string.Empty).ToString();
+                }
+            }
+
+            if (!string.IsNullOrEmpty(foundGUID))
+            {
+                using (RegistryKey key = Registry.LocalMachine.
+                    OpenSubKey($@"BCD00000000\Objects\{foundGUID}\Elements\16000049"))
+                {
+                    if (key != null)
+                    {
+                        byte[] tempAr = (byte[])key.GetValue("Element", new byte[] { 0 });
+                        int temp = Convert.ToInt32(tempAr[0]);
+                        if (temp > 0) result = true;
+                    }
+                }
             }
 
             return result;

@@ -39,6 +39,16 @@ namespace HidGuardianInstaller
             driverProgressBar.DataContext = installer;
             installBtn.IsEnabled = false;
             uninstallBtn.IsEnabled = false;
+
+            if (!Util.IsTestSigningEnabled())
+            {
+                MessageBox.Show(@"You must enable Test Signing on Windows in order to use this installer. From the command window, run the following command.
+
+bcdedit -set TESTSIGNING ON",
+                    "HidGuardian Install Utility");
+                Close();
+            }
+
             InitialDriverCheck();
             logMsgBox.ScrollToEnd();
         }

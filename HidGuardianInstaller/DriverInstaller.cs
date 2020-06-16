@@ -45,14 +45,14 @@ namespace HidGuardianInstaller
             Progress = 0.0;
 
             // Step 1
-            string archiveName = "HidGuardian.zip";
-            using (WebClient wb = new WebClient())
-            {
-                AppLogger.Log("Start downloading HidGuardian archive");
-                wb.DownloadProgressChanged += UpdateDlProgress;
-                await wb.DownloadFileTaskAsync(new Uri("https://downloads.vigem.org/projects/HidGuardian/stable/1.14.3.0/windows/x64/HidGuardian.zip"),
-                    Path.Combine(Util.exepath, archiveName));
-            }
+            string archiveName = $"HidGuardian_{Util.HIDGUARD_VERSION}.zip";
+            //using (WebClient wb = new WebClient())
+            //{
+            //    AppLogger.Log("Start downloading HidGuardian archive");
+            //    wb.DownloadProgressChanged += UpdateDlProgress;
+            //    await wb.DownloadFileTaskAsync(new Uri("https://downloads.vigem.org/projects/HidGuardian/stable/1.14.3.0/windows/x64/HidGuardian.zip"),
+            //        Path.Combine(Util.exepath, archiveName));
+            //}
 
             string archivePath = Path.Combine(Util.exepath, archiveName);
             string hidGuardPath = Path.Combine(Util.exepath, "HidGuardian");
@@ -110,24 +110,24 @@ namespace HidGuardianInstaller
                 Progress = 66.7;
                 AppLogger.Log("HidGuardian Driver Installed");
                 AppLogger.Log("Perform Registry Changes");
-                RegistryKey key = Registry.LocalMachine.CreateSubKey(@"SYSTEM\CurrentControlSet\Services\HidGuardian\Parameters");
-                if (key.GetValue("AffectedDevices", null) == null)
-                {
-                    AppLogger.Log("Writing template AffectedDevice list");
-                    key.SetValue("AffectedDevices", Util.affectedDevs.ToArray(), RegistryValueKind.MultiString);
-                }
+                //RegistryKey key = Registry.LocalMachine.CreateSubKey(@"SYSTEM\CurrentControlSet\Services\HidGuardian\Parameters");
+                //if (key.GetValue("AffectedDevices", null) == null)
+                //{
+                //    AppLogger.Log("Writing template AffectedDevice list");
+                //    key.SetValue("AffectedDevices", Util.affectedDevs.ToArray(), RegistryValueKind.MultiString);
+                //}
 
                 // Step 6
                 Progress = 83.3;
-                key = Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Control\Class\{745a17a0-74d3-11d0-b6fe-00a0c90f57da}", true);
-                string[] filters = key.GetValue("UpperFilters") as string[];
-                List<string> temper = filters != null ? new List<string>(filters) : new List<string>();
-                if (!temper.Contains("HidGuardian"))
-                {
-                    //Console.WriteLine("FILTER NOT FOUND. SET IT UP.");
-                    temper.Add("HidGuardian");
-                    key.SetValue("UpperFilters", temper.ToArray(), RegistryValueKind.MultiString);
-                }
+                //RegistryKey key = Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Control\Class\{745a17a0-74d3-11d0-b6fe-00a0c90f57da}", true);
+                //string[] filters = key.GetValue("UpperFilters") as string[];
+                //List<string> temper = filters != null ? new List<string>(filters) : new List<string>();
+                //if (!temper.Contains("HidGuardian"))
+                //{
+                //    //Console.WriteLine("FILTER NOT FOUND. SET IT UP.");
+                //    temper.Add("HidGuardian");
+                //    key.SetValue("UpperFilters", temper.ToArray(), RegistryValueKind.MultiString);
+                //}
 
                 AppLogger.Log("HidGuardian is now installed\n");
                 Progress = 100.0;
