@@ -42,9 +42,11 @@ namespace HidGuardianInstaller
 
             if (!Util.IsTestSigningEnabled())
             {
-                MessageBox.Show(@"You must enable Test Signing on Windows in order to use this installer. From the command window, run the following command.
+                MessageBox.Show(@"You must enable Test Signing on Windows in order to use this installer. From an admin command window, run the following command.
 
-bcdedit -set TESTSIGNING ON",
+bcdedit -set TESTSIGNING ON
+
+Reboot afterwards in order for the change to take effect.",
                     "HidGuardian Install Utility");
                 Close();
             }
