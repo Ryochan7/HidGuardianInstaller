@@ -5,13 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace HidGuardianInstaller
 {
@@ -40,16 +33,16 @@ namespace HidGuardianInstaller
             installBtn.IsEnabled = false;
             uninstallBtn.IsEnabled = false;
 
-            if (!Util.IsTestSigningEnabled())
-            {
-                MessageBox.Show(@"You must enable Test Signing on Windows in order to use this installer. From an admin command window, run the following command.
+//            if (!Util.IsTestSigningEnabled())
+//            {
+//                MessageBox.Show(@"You must enable Test Signing on Windows in order to use this installer. From an admin command window, run the following command.
 
-bcdedit -set TESTSIGNING ON
+//bcdedit -set TESTSIGNING ON
 
-Reboot afterwards in order for the change to take effect.",
-                    "HidGuardian Install Utility");
-                Close();
-            }
+//Reboot afterwards in order for the change to take effect.",
+//                    "HidGuardian Install Utility");
+//                Close();
+//            }
 
             InitialDriverCheck();
             logMsgBox.ScrollToEnd();

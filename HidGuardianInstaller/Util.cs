@@ -13,7 +13,7 @@ namespace HidGuardianInstaller
         public static string exepath = Directory.GetParent(Assembly.GetExecutingAssembly().Location).FullName;
         public static string arch = Environment.Is64BitOperatingSystem ? "x64" : "x86";
         internal const string hidGuardDevicePath = @"Root\HidGuardian";
-        internal const string HIDGUARD_VERSION = "1.14.3.1";
+        internal const string HIDGUARD_VERSION = "1.14.3.2";
 
         public static List<string> affectedDevs = new List<string>()
         {
